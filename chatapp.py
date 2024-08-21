@@ -56,5 +56,13 @@ def chatroom(code):
     messages = chatrooms[code]
     return render_template('chatroom.html', code=code, messages=messages)
 
+from flask import jsonify
+
+@app.route('/get_messages/<code>', methods=['GET'])
+def get_messages(code):
+    # Retrieve the chatroom messages by code (replace with your logic)
+    messages = chatrooms.get(code, [])
+    return jsonify(messages)
+
 if __name__ == "__main__":
     app.run(debug=True)

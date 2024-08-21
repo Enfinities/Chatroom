@@ -5,21 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chatroom - {{ code }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <div class="container">
         <h1>Chatroom: {{ code }}</h1>
-        <div class="chat-log">
-            {% for message in messages %}
-                <div class="message">
-                    <strong>{{ message['user'] }}:</strong> {{ message['message'] }}
-                </div>
-            {% endfor %}
+        <div class="chat-log" id="chat-log">
+            <!-- Chat messages will be inserted here -->
         </div>
         <form method="POST" action="">
             <input type="text" name="message" placeholder="Type your message" required>
             <button type="submit">Send</button>
         </form>
     </div>
+
+    <script>
+        function fetchMessages() {
+            $.getJSON('/get_messages/{{ code }}', function(data) {
+                var chatLog = $('#chat-log');
+                chatLog.empty();  // Clear the chat log
+                data.forEach(function(msg) {
+                    chatLog.append('<div class="message"><strong>' + msg.user + ':</strong> ' + msg.message + '</div>');
+                });
+                chatLog.scrollTop(chatLog[0].scrollHeight);  // Scroll to the bottom
+            });
+        }
+
+        $(document).ready(function() {
+            // Fetch messages every second
+            setInterval(fetchMessages, 1000);
+        });
+    </script>
 </body>
 </html>
