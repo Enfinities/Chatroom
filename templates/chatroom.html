@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatroom - {{ code }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Chatroom: {{ code }}</h1>
+        <div class="chat-log">
+            {% for message in messages %}
+                <div class="message">
+                    <strong>{{ message['user'] }}:</strong> {{ message['message'] }}
+                </div>
+            {% endfor %}
+        </div>
+        <form method="POST" action="">
+            <input type="text" name="message" placeholder="Type your message" required>
+            <button type="submit">Send</button>
+        </form>
+    </div>
+</body>
+</html>
